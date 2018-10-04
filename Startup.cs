@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Database;
+using api.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -41,6 +43,11 @@ namespace api
             services.AddAutoMapper();
             
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+        
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            services.AddTransient<IUserService, UserServiceFake>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

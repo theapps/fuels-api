@@ -59,7 +59,7 @@ namespace api.Migrations
 
                     b.HasIndex("VehicleId");
 
-                    b.ToTable("Fuel");
+                    b.ToTable("Fuels");
                 });
 
             modelBuilder.Entity("api.Domain.FuelType", b =>

@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="..\web\.git\objects\info" />
+    <Folder Include="..\web\.git\objects\pack" />
+    <Folder Include="..\web\.git\refs\tags" />
+    <Folder Include="..\web\node_modules\.bin" />
+    <Folder Include="..\web\node_modules\@babel\core\node_modules\.bin" />
+    <Folder Include="..\web\node_modules\@babel\generator\node_modules\.bin" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

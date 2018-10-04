@@ -12,6 +12,7 @@ namespace api.Database
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<FuelType> FuelTypes { get; set; }
+        public DbSet<Fuel> Fuels { get; set; }
         
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)

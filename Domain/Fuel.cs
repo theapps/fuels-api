@@ -18,5 +18,10 @@ namespace api.Domain
 
         [MaxLength(4000)] 
         public string Comments { get; set; }
+
+        public void CalculatePricePerLitre()
+        {
+            LitrePrice = Math.Round(Price / Litres, 2);;
+        }
     }
 }
