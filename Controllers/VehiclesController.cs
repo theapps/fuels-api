@@ -37,7 +37,7 @@ namespace api.Controllers
 
         public ActionResult<List<Vehicle>> Get()
         {
-            var vehicles = _db.Vehicles.Include(x=>x.FuelType).ToList();
+            var vehicles = _db.Vehicles.Include(x=>x.FuelType).Where(x=>x.AccountId == _userService.CurrentUserId).ToList();
 
             var model = _mapper.Map<List<VehicleDashboardDto>>(vehicles);
             

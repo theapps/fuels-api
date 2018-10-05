@@ -28,7 +28,9 @@ namespace api.Controllers
 
         public ActionResult<List<FuelCreateDto>> Get() 
         {
-            var fuels = _db.Fuels.Include(x => x.Vehicle).ToList();
+            var fuels = _db.Fuels.Include(x => x.Vehicle)
+                            .Where(x=>x.Vehicle.AccountId == _userService.CurrentUserId)
+                            .ToList();
             var fuelsDtos = _mapper.Map<List<FuelListItemDto>>(fuels);
             return Ok(fuelsDtos);
         }

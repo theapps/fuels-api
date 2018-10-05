@@ -17,18 +17,31 @@ namespace api.Services
             _db = db;
         }
 
-        public int CurrentUserId
-        {
-            get
-            {
-                if (!EnumerableExtensions.Any(_db.Accounts))
-                {
-                    _db.Add(new Account {Telephone = "911"});
-                    _db.SaveChanges();
-                }
+        public int CurrentUserId { get; set; }
+//        public int CurrentUserId
+//        {
+//            get
+//            {
+//                if (!EnumerableExtensions.Any(_db.Accounts))
+//                {
+//                    _db.Add(new Account {Telephone = "911"});
+//                    _db.SaveChanges();
+//                }
+//
+//                return _db.Accounts.First().Id;
+//            }
+//            private set { };
+//        }
 
-                return _db.Accounts.First().Id;
+        public void SetCurrentUser(string phone)
+        {
+            if (!_db.Accounts.Any(x => x.Telephone == phone))
+            {
+                _db.Add(new Account{Telephone =  phone});
+                _db.SaveChanges();
             }
+
+            CurrentUserId = _db.Accounts.First(x => x.Telephone == phone).Id;
         }
     }
 }

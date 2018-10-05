@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using api.Config;
 using api.Database;
 using api.Services;
 using AutoMapper;
@@ -42,11 +43,13 @@ namespace api
             
             services.AddAutoMapper();
             
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services
+                .AddMvc(opt => opt.Filters.Add(typeof(PhoneUserAttribute)))
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-            services.AddTransient<IUserService, UserServiceFake>();
+            services.AddScoped<IUserService, UserServiceFake>();
 
         }
 
