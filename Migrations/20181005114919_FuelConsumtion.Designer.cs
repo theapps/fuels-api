@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using api.Database;
@@ -9,9 +10,10 @@ using api.Database;
 namespace api.Migrations
 {
     [DbContext(typeof(AppDb))]
-    partial class AppCtxModelSnapshot : ModelSnapshot
+    [Migration("20181005114919_FuelConsumtion")]
+    partial class FuelConsumtion
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

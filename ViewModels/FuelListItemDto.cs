@@ -12,6 +12,7 @@ namespace api.ViewModels
         public decimal Price { get; set; }
         public decimal LitrePrice { get; set; }
         public bool IsPartial { get; set; } = false;
+        public decimal FuelConsumption { get; set; }
 
     }
 }

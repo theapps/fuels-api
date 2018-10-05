@@ -54,7 +54,26 @@ namespace api.Controllers
             fuel.CalculatePricePerLitre();
             _db.Add(fuel);
             _db.SaveChanges();
+            CalculateFuelConsumption(fuel);
             return Created("", model);
+        }
+
+        private void CalculateFuelConsumption(Fuel fuel)
+        {
+            //get last fuel for the car that is not partial
+            var lastFuel = _db.Fuels
+                                .Where(x => x.VehicleId == fuel.VehicleId &&
+                                            x.Date <= fuel.Date
+                                            && x.IsPartial == false
+                                            && x.Id != fuel.Id)
+                                .OrderByDescending(x => x.Date)
+                                .Take(1)
+                                .FirstOrDefault();
+            if (lastFuel != null)
+            {
+                fuel.CalculateConsumption(lastFuel);
+                _db.SaveChanges();
+            }
         }
 
         [HttpDelete]
