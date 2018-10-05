@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using api.Database;
 using api.Services;
@@ -20,34 +21,66 @@ namespace api.Controllers
             _userService = userService;
         }
 
+        public class DashItemVehicleDto
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+        }
+
+        public class DashItemFuelsDto
+        {
+            public string Date { get; set; }
+            public decimal Consumption { get; set; }
+        }
+
+        public class DashItemDto
+        {
+            public DashItemVehicleDto Vehicle { get; set; }
+
+            public List<DashItemFuelsDto> Fuels { get; set; }
+
+            public DashItemDto()
+            {
+                Fuels = new List<DashItemFuelsDto>();
+            }
+        }
+
+
         public ActionResult Get()
         {
             var minDate = DateTime.Now.AddMonths(-4);
             //TODO: Get the vehicles for the guy
-            var fuelsGrouped = _db.Fuels.Where(x => x.Vehicle.AccountId == _userService.CurrentUserId 
-                                                    //&& x.Date > minDate 
-                                                    )
+            var fuelsGrouped = _db.Fuels.Where(x => x.Vehicle.AccountId == _userService.CurrentUserId
+                    && x.Date > minDate 
+                )
                 .Include(x => x.Vehicle)
-                .OrderBy(x=>x.Vehicle.Name)
+                .OrderBy(x => x.Vehicle.Name)
                 .ThenByDescending(x => x.Date)
                 .GroupBy(x => x.Vehicle)
                 .ToList();
 
             var data = fuelsGrouped.Select(x =>
-                new
+                new DashItemDto
                 {
-                    Vehicle = new { Id =  x.Key.Id, Name = x.Key.Name},
+                    Vehicle = new DashItemVehicleDto {Id = x.Key.Id, Name = x.Key.Name},
                     Fuels = x.Select(v =>
-                        new
+                        new DashItemFuelsDto
                         {
-                            Date =v.Date.ToString("yyyy-MM-dd"),
+                            Date = v.Date.ToString("yyyy-MM-dd"),
                             Consumption = v.FuelConsumption
-                        })
+                        }).ToList()
                 }).ToList();
 
-            //TODO: Get the fuel consumption
+            var data2 = _db.Vehicles.Where(x => x.AccountId == _userService.CurrentUserId &&
+                                                x.Fuels.Count == 0)
+                .Select(x => new DashItemDto
+                {
+                    Vehicle = new DashItemVehicleDto {Id = x.Id, Name = x.Name}
+                })
+                .ToList();
 
-            return Ok(data);
+
+            return Ok(data.Union(data2));
         }
     }
 }
