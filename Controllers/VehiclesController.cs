@@ -44,6 +44,36 @@ namespace api.Controllers
             return Ok(model);
         }
         
+        [HttpGet]
+        [Route("{id}")]
+        public ActionResult<List<Vehicle>> Get(int id)
+        {
+            var vehicle = _db.Vehicles
+                                .FirstOrDefault(x=>x.AccountId == _userService.CurrentUserId &&
+                                          x.Id == id);
+            if (vehicle == null) return BadRequest();
+            
+            var model = _mapper.Map<VehicleEditDto>(vehicle);
+            
+            return Ok(model);
+        }
+        
+        [HttpPatch]
+        public ActionResult<List<Vehicle>> Patch([FromBody] VehicleEditDto model)
+        {
+            var vehicle = _db.Vehicles
+                .FirstOrDefault(x=>x.AccountId == _userService.CurrentUserId &&
+                                   x.Id == model.Id);
+            if (vehicle == null) return BadRequest();
+
+            _mapper.Map(model, vehicle);
+
+            _db.SaveChanges();
+          //  var model = _mapper.Map<VehicleEditDto>(vehicle);
+            
+            return NoContent();
+        }
+        
         [HttpPost]
         [Route("{id}/fuels")]
         public ActionResult Post(int id, [FromBody] FuelCreateDto model)
@@ -56,7 +86,7 @@ namespace api.Controllers
             _db.SaveChanges();
             CalculateFuelConsumption(fuel);
             return Created("", model);
-        }
+        }  
 
         private void CalculateFuelConsumption(Fuel fuel)
         {
@@ -80,6 +110,7 @@ namespace api.Controllers
         [Route("{id}")]
         public ActionResult Del(int id)
         {
+            if (_db.Fuels.Any(x => x.VehicleId == id)) return BadRequest();
             var v = _db.Vehicles.FirstOrDefault(x => x.Id == id && x.AccountId == _userService.CurrentUserId);
             if (v == null) return BadRequest();
             _db.Vehicles.Remove(v);

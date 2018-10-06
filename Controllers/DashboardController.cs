@@ -51,7 +51,7 @@ namespace api.Controllers
             var minDate = DateTime.Now.AddMonths(-4);
             //TODO: Get the vehicles for the guy
             var fuelsGrouped = _db.Fuels.Where(x => x.Vehicle.AccountId == _userService.CurrentUserId
-                    && x.Date > minDate 
+                                                    && x.Date > minDate
                 )
                 .Include(x => x.Vehicle)
                 .OrderBy(x => x.Vehicle.Name)
@@ -59,7 +59,7 @@ namespace api.Controllers
                 .GroupBy(x => x.Vehicle)
                 .ToList();
 
-            var data = fuelsGrouped.Select(x =>
+            var withFuels = fuelsGrouped.Select(x =>
                 new DashItemDto
                 {
                     Vehicle = new DashItemVehicleDto {Id = x.Key.Id, Name = x.Key.Name},
@@ -71,16 +71,20 @@ namespace api.Controllers
                         }).ToList()
                 }).ToList();
 
-            var data2 = _db.Vehicles.Where(x => x.AccountId == _userService.CurrentUserId &&
-                                                x.Fuels.Count == 0)
-                .Select(x => new DashItemDto
-                {
-                    Vehicle = new DashItemVehicleDto {Id = x.Id, Name = x.Name}
-                })
+            var withoutFuels = 
+                _db.Vehicles
+                    .Where(x => x.AccountId == _userService.CurrentUserId &&
+                                x.Fuels.Count == 0)
+                    .Select(x => new DashItemDto{
+                                Vehicle = new DashItemVehicleDto
+                                {
+                                    Id = x.Id, 
+                                    Name = x.Name
+                                }})
                 .ToList();
 
 
-            return Ok(data.Union(data2));
+            return Ok(withFuels.Union(withoutFuels));
         }
     }
 }

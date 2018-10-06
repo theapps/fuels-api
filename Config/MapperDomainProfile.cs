@@ -11,6 +11,7 @@ namespace api.Config
         {
             CreateMap<VehicleCreateDto, Vehicle>(MemberList.Source);
             CreateMap< VehicleDashboardDto, Vehicle>();
+            CreateMap< VehicleEditDto, Vehicle>();            
             CreateMap<FuelCreateDto, Fuel>(MemberList.Source);
             CreateMap<Fuel, FuelListItemDto >()
                 .ForMember(x=>x.Date,opt => 
