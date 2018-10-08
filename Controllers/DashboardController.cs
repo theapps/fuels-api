@@ -57,6 +57,7 @@ namespace api.Controllers
                 .OrderBy(x => x.Vehicle.Name)
                 .ThenByDescending(x => x.Date)
                 .GroupBy(x => x.Vehicle)
+                .AsNoTracking()
                 .ToList();
 
             var withFuels = fuelsGrouped.Select(x =>
@@ -75,6 +76,7 @@ namespace api.Controllers
                 _db.Vehicles
                     .Where(x => x.AccountId == _userService.CurrentUserId &&
                                 x.Fuels.Count == 0)
+                    .AsNoTracking()
                     .Select(x => new DashItemDto{
                                 Vehicle = new DashItemVehicleDto
                                 {

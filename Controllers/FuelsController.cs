@@ -37,6 +37,7 @@ namespace api.Controllers
                             .ThenByDescending(x=>x.Kms)
                             .Skip(pageSize * (page -1))
                             .Take(pageSize)
+                            .AsNoTracking()
                             .ToList();
             var fuelsDtos = _mapper.Map<List<FuelListItemDto>>(fuels);
             return Ok(fuelsDtos);
