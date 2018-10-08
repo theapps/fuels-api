@@ -34,7 +34,7 @@ namespace api.Controllers
             var fuels = _db.Fuels.Include(x => x.Vehicle)
                             .Where(x=>x.Vehicle.AccountId == _userService.CurrentUserId)
                             .OrderBy(x=>x.Vehicle.Name)
-                            .ThenByDescending(x=>x.Date)
+                            .ThenByDescending(x=>x.Kms)
                             .Skip(pageSize * (page -1))
                             .Take(pageSize)
                             .ToList();
