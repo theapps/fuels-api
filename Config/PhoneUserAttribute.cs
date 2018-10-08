@@ -1,3 +1,4 @@
+using System.Threading;
 using api.Services;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -14,6 +15,7 @@ namespace api.Config
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
+           // Thread.Sleep(1000);
             var phone = context?.HttpContext?.Request?.Headers?["phone"];
             if (!string.IsNullOrWhiteSpace( phone))
             {

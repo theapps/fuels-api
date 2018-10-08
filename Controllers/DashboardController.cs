@@ -83,8 +83,13 @@ namespace api.Controllers
                                 }})
                 .ToList();
 
-
-            return Ok(withFuels.Union(withoutFuels));
+            var model = new
+            {
+                Items = withFuels.Union(withoutFuels).OrderByDescending(x => x.Fuels.Count),
+                Fuels = _db.Fuels.Count(x => x.Vehicle.AccountId == _userService.CurrentUserId),
+                Vehicles = _db.Vehicles.Count(x => x.AccountId == _userService.CurrentUserId)
+            };
+            return Ok(model);
         }
     }
 }

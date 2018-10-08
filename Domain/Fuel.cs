@@ -32,6 +32,9 @@ namespace api.Domain
                FuelConsumption = Math.Round( (Litres / kms) * 100, 2);
         }
 
-        
+        public override string ToString()
+        {
+            return $"{Comments} - {IsPartial}";
+        }
     }
 }

@@ -13,6 +13,8 @@ namespace api.Config
             CreateMap< VehicleDashboardDto, Vehicle>();
             CreateMap< VehicleEditDto, Vehicle>();            
             CreateMap<FuelCreateDto, Fuel>(MemberList.Source);
+            CreateMap<FuelEditDto, Fuel>(MemberList.Source);
+            
             CreateMap<Fuel, FuelListItemDto >()
                 .ForMember(x=>x.Date,opt => 
                     opt.MapFrom(src => src.Date.ToString("yyyy-MM-dd")));
