@@ -14,9 +14,9 @@ namespace api.Controllers
     [ApiController]
     public class VehiclesController: ControllerBase
     {
-        private IMapper _mapper;
-        private AppDb _db;
-        private IUserService _userService;
+        private readonly IMapper _mapper;
+        private readonly AppDb _db;
+        private readonly IUserService _userService;
 
         public VehiclesController(AppDb db, IMapper mapper, IUserService userService)
         {
@@ -72,7 +72,6 @@ namespace api.Controllers
             _mapper.Map(model, vehicle);
 
             _db.SaveChanges();
-          //  var model = _mapper.Map<VehicleEditDto>(vehicle);
             
             return NoContent();
         }

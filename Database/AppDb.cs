@@ -25,7 +25,7 @@ namespace api.Database
 //                new VehicleType{Id =1, Name = "Autoturism"},new VehicleType{Id =2, Name = "Transport marfa"},new VehicleType{Id =3, Name = "Transport persoane"}
 //            );
             
-            base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(modelBuilder); 
         }
     }
 }

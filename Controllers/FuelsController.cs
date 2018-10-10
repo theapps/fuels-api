@@ -14,9 +14,9 @@ namespace api.Controllers
     [ApiController]
     public class FuelsController: ControllerBase
     {
-        private IMapper _mapper;
-        private AppDb _db;
-        private IUserService _userService;
+        private readonly IMapper _mapper;
+        private readonly AppDb _db;
+        private readonly IUserService _userService;
 
 
         public FuelsController(AppDb db, IMapper mapper, IUserService userService)
