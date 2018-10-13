@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using api.Database;
@@ -35,14 +36,15 @@ namespace api.Controllers
             return Created("", model);
         }
 
-        public ActionResult<List<Vehicle>> Get()
+        public ActionResult<List<VehicleListItemDto>> Get()
         {
             var vehicles = _db.Vehicles
                                 .Include(x=>x.FuelType)
                                 .Where(x=>x.AccountId == _userService.CurrentUserId)
                                 .AsNoTracking().ToList();
 
-            var model = _mapper.Map<List<VehicleDashboardDto>>(vehicles);
+            var model = _mapper.Map<List<VehicleListItemDto>>(vehicles); 
+            Console.WriteLine(model);
             
             return Ok(model);
         }
