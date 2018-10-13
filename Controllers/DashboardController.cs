@@ -39,7 +39,15 @@ namespace api.Controllers
             var withFuels = fuelsGrouped.Select(x =>
                 new DashItemDto
                 {
-                    Vehicle = new DashItemVehicleDto {Id = x.Key.Id, Name = x.Key.Name},
+                    Vehicle = new DashItemVehicleDto {
+                        Id = x.Key.Id, 
+                        Name = x.Key.Name,
+                        Itp = x.Key.Itp.HasValue ? x.Key.Itp.Value.ToString("dd.MM.yyy") : "",
+                        ItpExpired = x.Key.Itp.HasValue ? x.Key.Itp.Value < DateTime.Now : false,
+                        Rca = x.Key.Rca.HasValue ? x.Key.Rca.Value.ToString("dd.MM.yyy") : "",
+                        RcaExpired = x.Key.Rca.HasValue ? x.Key.Rca.Value < DateTime.Now  : false,
+
+                        },
                     Fuels = x.Select(v =>
                         new DashItemFuelsDto
                         {
@@ -54,11 +62,16 @@ namespace api.Controllers
                                 x.Fuels.Count == 0)
                     .AsNoTracking()
                     .Select(x => new DashItemDto{
-                                Vehicle = new DashItemVehicleDto
-                                {
-                                    Id = x.Id, 
-                                    Name = x.Name
-                                }})
+                                Vehicle =
+                                    new DashItemVehicleDto {
+                                                Id = x.Id, 
+                                                Name = x.Name,
+                                                Itp = x.Itp.HasValue ? x.Itp.Value.ToString("dd.MM.yyy") : "",
+                                                ItpExpired = x.Itp.HasValue ? x.Itp.Value < DateTime.Now : false,
+                                                Rca = x.Rca.HasValue ? x.Rca.Value.ToString("dd.MM.yyy") : "",
+                                                RcaExpired = x.Rca.HasValue ? x.Rca.Value < DateTime.Now  : false,
+
+                                                }})
                 .ToList();
 
             var model = new
